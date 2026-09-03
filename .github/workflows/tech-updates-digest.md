@@ -53,7 +53,7 @@ Steps:
    curl --fail --location --show-error --silent --max-time 60 "<url>"
    ```
 
-   `curl` must go through the sandbox proxy, so keep the ambient `HTTPS_PROXY` / `HTTP_PROXY` environment variables intact — do not unset them or pass `--noproxy`. Only report `missing_tool` for a source after **both** `web-fetch` and `curl` have failed for it, and always continue with the remaining sources instead of aborting the run.
+   `curl` must go through the sandbox proxy, so keep the ambient `HTTPS_PROXY` / `HTTP_PROXY` environment variables intact — do not unset them or pass `--noproxy`. Do not run connectivity probes against unrelated domains (for example `example.com`); only test the exact source feed and fallback page URLs listed above. Treat a denial on an unrelated domain as non-actionable. Only report `missing_tool` after **all three sources** fail with both `web-fetch` and `curl`, and include the exact per-source errors in the reason; always continue with the remaining sources instead of aborting the run.
 2. Extract each update's title, publication date, canonical link, and a brief 1-2 sentence summary of what changed.
 3. Read `Index.html` in the repository root if it exists. Treat the update links already present in the file as the deduplication key: skip any update whose link is already recorded.
 4. Write the result to `Index.html`:
